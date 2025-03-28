@@ -29,10 +29,10 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250204.0",
-    "prettier": "^3.5.3",
-    "wrangler": "^3.108.1",
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
-    "@commitlint/prompt-cli": "^19.7.1"
+    "@commitlint/prompt-cli": "^19.7.1",
+    "prettier": "^3.5.3",
+    "wrangler": "^3.114.3"
   }
 }
