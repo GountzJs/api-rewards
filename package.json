@@ -1,0 +1,38 @@
+{
+  "name": "api-rewards",
+  "private": true,
+  "version": "0.0.0",
+  "keywords": [
+    "twitch",
+    "stream",
+    "api",
+    "workers",
+    "embeejayz",
+    "rewards"
+  ],
+  "author": {
+    "name": "GountzJs",
+    "email": "tomasjdev@gmail.com"
+  },
+  "description": "Reward system for Embeejayz's Twitch community.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "commit": "commit",
+    "format": "prettier . --write"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "hono": "^4.6.20",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250204.0",
+    "prettier": "^3.5.3",
+    "wrangler": "^3.108.1",
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
+    "@commitlint/prompt-cli": "^19.7.1"
+  }
+}

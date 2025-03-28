@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+.vscode/
+*.env
+*.env.*
+LICENSE
+**/*.md
+**/.wrangler/**
+pnpm-lock.yaml
+pnpm-workspace.yaml
