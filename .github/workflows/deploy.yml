@@ -39,6 +39,6 @@ jobs:
           EOF
 
       - name: Run Deploy Api Rewards
-        run: pnpm deploy
+        run: npx wrangler deploy --minify
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
