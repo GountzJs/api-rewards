@@ -1,6 +1,5 @@
 export const origins = [
   'https://rewards.embeejayz.com',
-  'https://embee-org.pages.dev',
+  'https://recompensas.embeejayz.com',
   'https://web-rewards.pages.dev',
-  'http://localhost:3000',
 ];
