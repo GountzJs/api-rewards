@@ -1,13 +1,14 @@
 import { Context } from 'hono';
 import { BlankInput } from 'hono/types';
 import { initTursoClient } from '../db';
+import { CardPack } from '../models/enums/card-pack.enum';
 import { UserCardsService } from '../services/user-cards.service';
 
 type CardsLatestContext = Context<
   {
     Bindings: CloudflareBindings;
   },
-  '/api/cards/latest/:id',
+  '/api/cards/:id',
   BlankInput
 >;
 
@@ -16,22 +17,28 @@ export class UsersCardsController {
     private readonly userCardsService: UserCardsService = new UserCardsService(),
   ) {}
 
-  getLatestCards = async (c: CardsLatestContext) => {
+  getCardsByUser = async (c: CardsLatestContext) => {
     const { id } = c.req.param();
-    const { quantity } = c.req.query();
-    const qnt = Number(quantity || 0);
-    if (!qnt || qnt > 12) return c.json({ message: 'Invalid quantity' }, 400);
+    const { page, pack } = c.req.query();
+    const pageNumber = Number(page) || 0;
+    if (!Object.values(CardPack).includes(pack as CardPack))
+      return c.json({ error: 'Pack is not valid' }, 400);
+    if (isNaN(pageNumber))
+      return c.json({ error: 'Page number is not a number' }, 400);
+    const pageSize = 10;
     const client = initTursoClient({
       TURSO_DATABASE_URL: c.env.TURSO_DATABASE_URL,
       TURSO_AUTH_TOKEN: c.env.TURSO_AUTH_TOKEN,
     });
     try {
-      const cards = await this.userCardsService.getLastCards({
+      const { cards, pagination } = await this.userCardsService.getCardsByUser({
         client,
         userId: id,
-        limit: qnt,
+        page: pageNumber,
+        pageSize: pageSize,
+        pack: pack as CardPack,
       });
-      return c.json({ cards }, 200);
+      return c.json({ cards, pagination }, 200);
     } catch {
       return c.json({ message: 'Something went wrong' }, 500);
     }

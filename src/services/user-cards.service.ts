@@ -1,4 +1,5 @@
 import { Client } from '@libsql/client';
+import { CardPack } from '../models/enums/card-pack.enum';
 import { UserCardsRepository } from '../repositories/user-cards.repository';
 
 export class UserCardsService {
@@ -6,20 +7,30 @@ export class UserCardsService {
     private readonly userCardsRepository: UserCardsRepository = new UserCardsRepository(),
   ) {}
 
-  async getLastCards({
+  async getCardsByUser({
     client,
-    limit,
     userId,
+    page,
+    pageSize,
+    pack,
   }: {
     userId: string;
-    limit: number;
     client: Client;
+    page: number;
+    pageSize: number;
+    pack: CardPack;
   }) {
-    const cards = await this.userCardsRepository.getLastCards(
-      client,
-      userId,
-      limit,
-    );
-    return cards;
+    try {
+      const res = await this.userCardsRepository.getCardsByUser(
+        client,
+        userId,
+        page,
+        pageSize,
+        pack,
+      );
+      return res;
+    } catch {
+      throw new Error('[CODE:500]: Fallo al obtener las cartas');
+    }
   }
 }

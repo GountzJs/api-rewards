@@ -10,9 +10,6 @@ export class UsersCardsRoutes extends BaseRoutes {
   }
 
   initRoutes(): void {
-    this.router.get(
-      '/api/cards/latest/:id',
-      this.usersCardsController.getLatestCards,
-    );
+    this.router.get('/api/cards/:id', this.usersCardsController.getCardsByUser);
   }
 }
