@@ -11,12 +11,16 @@ export class UserBordersRepository {
           u.login AS username, 
           u.twitch_ref AS twitchRef, 
           u.profile_image_url AS avatar, 
-          COUNT(ub.id) AS quantityBorders
+          COUNT(DISTINCT ub.id) AS quantityBorders,
+          COUNT(DISTINCT uc.id) AS quantityCards,
+          (COUNT(DISTINCT ub.id) + COUNT(DISTINCT uc.id)) AS totalRank
       FROM users u
-      INNER JOIN user_borders ub ON u.id = ub.user_id
+      LEFT JOIN user_borders ub ON u.id = ub.user_id
+      LEFT JOIN user_cards uc ON u.id = uc.user_id
       WHERE u.is_staff = 0
       GROUP BY u.id
-      ORDER BY quantityBorders DESC, u.login ASC LIMIT 8
+      ORDER BY totalRank DESC, u.login ASC
+      LIMIT 8
     `;
     const { rows } = await client.execute(query);
     return rows;
