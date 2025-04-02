@@ -26,4 +26,16 @@ export class UsersService {
     if (!users.length) throw new Error('CODE[404]: User not found');
     return users;
   }
+
+  async getByUsername({
+    client,
+    username,
+  }: {
+    client: Client;
+    username: string;
+  }) {
+    const user = await this.usersRepository.getByUsername(client, username);
+    if (!user) throw new Error('CODE[404]: User not found');
+    return user;
+  }
 }

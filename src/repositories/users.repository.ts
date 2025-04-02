@@ -72,4 +72,12 @@ export class UsersRepository {
     });
     return rows;
   }
+
+  async getByUsername(client: Client, username: string) {
+    const { rows } = await client.execute({
+      sql: 'SELECT id, login, display_name as displayName, profile_image_url as profileImageUrl FROM users WHERE display_name = ?',
+      args: [username],
+    });
+    return rows[0];
+  }
 }

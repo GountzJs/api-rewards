@@ -11,5 +11,9 @@ export class UsersCardsRoutes extends BaseRoutes {
 
   initRoutes(): void {
     this.router.get('/api/cards/:id', this.usersCardsController.getCardsByUser);
+    this.router.get(
+      '/api/cards/:id/latest',
+      this.usersCardsController.getLastCards,
+    );
   }
 }

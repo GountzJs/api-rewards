@@ -12,5 +12,9 @@ export class UsersRoutes extends BaseRoutes {
   initRoutes(): void {
     this.router.get('/api/users/:id', this.usersController.getById);
     this.router.get('/api/users', this.usersController.getManyByUsername);
+    this.router.get(
+      '/api/users/username/:username',
+      this.usersController.getByUsername,
+    );
   }
 }

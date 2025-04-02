@@ -58,4 +58,32 @@ export class UserCardsRepository {
       },
     };
   }
+
+  async getLatestIds({
+    client,
+    userId,
+    limit,
+  }: {
+    client: Client;
+    userId: string;
+    limit: number;
+  }): Promise<{ ids: string[] }> {
+    const { rows } = await client.execute({
+      sql: 'SELECT card_id FROM user_cards WHERE user_id = ? ORDER BY created_at DESC LIMIT ?',
+      args: [userId, limit],
+    });
+    return { ids: rows.map((row: any) => row.card_id) } as {
+      ids: string[];
+    };
+  }
+
+  async getCards({ ids, client }: { ids: string[]; client: Client }) {
+    const query = ({ id }: { id: string }) => ({
+      sql: 'SELECT pack, category, name, description, identify, cover, is_special as isSpecial FROM cards WHERE id = ?',
+      args: [id],
+    });
+    const queryArray = ids.map((id) => query({ id }));
+    const res = await client.batch(queryArray, 'read');
+    return res.map((result: { rows: any[] }) => result.rows[0]);
+  }
 }

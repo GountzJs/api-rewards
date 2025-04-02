@@ -19,6 +19,14 @@ type UsersByUsernameContext = Context<
   BlankInput
 >;
 
+type UsersByUsernameContextParam = Context<
+  {
+    Bindings: CloudflareBindings;
+  },
+  '/api/users/:username',
+  BlankInput
+>;
+
 export class UsersController {
   constructor(private usersService: UsersService = new UsersService()) {}
 
@@ -56,6 +64,32 @@ export class UsersController {
         username,
       });
       return c.json({ users }, 200);
+    } catch (error) {
+      if (error instanceof Error)
+        return c.json(
+          { message: "We can't find users with that username" },
+          406,
+        );
+      return c.json({ message: 'Generic error, try later' }, 500);
+    }
+  };
+
+  getByUsername = async (c: UsersByUsernameContextParam) => {
+    const { username } = c.req.param();
+    if (!username || username.length < 3)
+      return c.json({ message: 'Username invalid or too short' }, 400);
+
+    const client = initTursoClient({
+      TURSO_DATABASE_URL: c.env.TURSO_DATABASE_URL,
+      TURSO_AUTH_TOKEN: c.env.TURSO_AUTH_TOKEN,
+    });
+
+    try {
+      const user = await this.usersService.getByUsername({
+        client,
+        username,
+      });
+      return c.json({ user }, 200);
     } catch (error) {
       if (error instanceof Error)
         return c.json(
