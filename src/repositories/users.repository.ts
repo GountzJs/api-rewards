@@ -45,7 +45,7 @@ export class UsersRepository {
           WHEN rank_position = 1 THEN 'CHALLENGER'
           WHEN rank_position = 2 THEN 'MASTER'
           WHEN rank_position = 3 THEN 'DIAMOND'
-          WHEN rank_position = 4 THEN 'PLATINUM'
+          WHEN rank_position = 4 THEN 'PLATINIUM'
           WHEN rank_position = 5 THEN 'GOLD'
           WHEN rank_position = 6 THEN 'SILVER'
           WHEN rank_position = 7 THEN 'BRONZE'
